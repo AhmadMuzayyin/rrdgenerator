@@ -1,23 +1,26 @@
-# Jalankan: docker compose up -d --build
+# Deploy lewat Portainer (Stacks) di host ini berjalan sebagai Docker Swarm service
+# ("docker info" -> Swarm: active). Konsekuensinya:
 #
-# NETWORK: digabung ke "barokah-network" — network ini SUDAH ADA di host (dibuat
-# manual/lewat service barokah lain, bukan oleh compose ini), makanya external:true.
-# Ini supaya reverse proxy (Zoraxy) atau service barokah lain yang jalan di network
-# yang sama bisa menjangkau container ini lewat nama container-nya.
-
-networks:
-  barokah-network:
-    name: barokah-network
-    external: true
+# 1. Swarm TIDAK bisa build image dari Dockerfile (key `build:` di bawah diabaikan
+#    saat deploy lewat Swarm/Portainer Stacks). Image `rrdgenerator:latest` harus
+#    SUDAH ADA di host ini sebelum stack di-deploy -- build sekali lewat salah satu:
+#      a) Portainer -> Images -> Build a new image (dari repo Git ini), tag: rrdgenerator:latest
+#      b) atau SSH ke host lalu: docker build -t rrdgenerator:latest .
+#    Untuk node swarm tunggal, image lokal itu langsung terpakai tanpa perlu registry.
+#
+# 2. Swarm service cuma bisa attach ke network yang scope-nya "swarm" (overlay).
+#    "barokah-network" yang sudah ada di host ini scope-nya "local" (bridge) --
+#    dipakai container barokah lain yang dijalankan lewat `docker compose` biasa,
+#    BUKAN lewat swarm. Servis ini SENGAJA tidak join network itu supaya tidak perlu
+#    mengubah driver-nya (yang akan mengganggu container lain yang sudah pakai network
+#    itu, mis. mysql). Akses ke luar tetap lewat port host yang di-publish di bawah.
 
 services:
   rrdgenerator:
+    image: rrdgenerator:latest
     build: .
-    container_name: rrdgenerator
     environment:
       TZ: ${TZ:-Asia/Jakarta}
     ports:
       - "7101:3000"
-    networks:
-      - barokah-network
     restart: unless-stopped
