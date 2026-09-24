@@ -1,0 +1,19 @@
+{
+  "name": "rrdgenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "bun --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "type": "module",
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "chartjs-plugin-dragdata": "^2.3.1",
+    "express": "^5.2.1",
+    "rrdtool": "^0.2.0"
+  }
+}

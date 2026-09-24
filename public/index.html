@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RRD Generator</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <label for="graphTitle">Judul Graph</label>
+      <input id="graphTitle" type="text" value="core-barokah - Traffic - traffic_in_20" />
+    </div>
+
+    <div class="toolbar-group">
+      <label for="rangeSelect">Rentang Waktu</label>
+      <select id="rangeSelect">
+        <option value="2d">Last 2 Days</option>
+        <option value="3d">Last 3 Days</option>
+        <option value="4d">Last 4 Days</option>
+        <option value="1w" selected>Last Week</option>
+        <option value="2w">Last 2 Weeks</option>
+        <option value="1mo">Last Month</option>
+        <option value="2mo">Last 2 Months</option>
+        <option value="3mo">Last 3 Months</option>
+        <option value="4mo">Last 4 Months</option>
+        <option value="6mo">Last 6 Months</option>
+        <option value="1y">Last Year</option>
+        <option value="2y">Last 2 Years</option>
+        <option value="dayshift">Day Shift</option>
+        <option value="thisday">This Day</option>
+        <option value="thisweek">This Week</option>
+        <option value="thismonth">This Month</option>
+        <option value="thisyear">This Year</option>
+        <option value="prevday">Previous Day</option>
+        <option value="prevweek">Previous Week</option>
+        <option value="prevmonth">Previous Month</option>
+        <option value="prevyear">Previous Year</option>
+      </select>
+    </div>
+
+    <div class="toolbar-group">
+      <label for="resetBtn">&nbsp;</label>
+      <button id="resetBtn" type="button">Reset Kurva</button>
+    </div>
+
+    <div class="toolbar-group">
+      <label for="generateBtn">&nbsp;</label>
+      <button id="generateBtn" type="button" class="primary">Generate RRD</button>
+    </div>
+  </div>
+
+  <p class="hint">Klik &amp; geser titik pada grafik (naik/turun) untuk mengubah nilai traffic Inbound / Outbound.</p>
+
+  <div class="graph-card">
+    <div class="graph-title" id="graphTitleDisplay"></div>
+    <div class="graph-body">
+      <canvas id="trafficChart"></canvas>
+      <div class="watermark">RRDTOOL / TOBI OETIKER</div>
+    </div>
+    <div class="graph-range" id="graphRangeDisplay"></div>
+    <div class="graph-legend">
+      <div class="legend-row">
+        <span class="swatch in"></span>
+        <span class="legend-label">Inbound</span>
+        <span>Current: <b id="inCurrent">-</b></span>
+        <span>Average: <b id="inAverage">-</b></span>
+        <span>Maximum: <b id="inMaximum">-</b></span>
+        <span>Total In: <b id="inTotal">-</b></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch out"></span>
+        <span class="legend-label">Outbound</span>
+        <span>Current: <b id="outCurrent">-</b></span>
+        <span>Average: <b id="outAverage">-</b></span>
+        <span>Maximum: <b id="outMaximum">-</b></span>
+        <span>Total Out: <b id="outTotal">-</b></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/vendor/chart.js"></script>
+  <script src="/vendor/dragdata.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

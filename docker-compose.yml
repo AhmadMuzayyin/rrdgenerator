@@ -1,0 +1,15 @@
+services:
+  rrdgenerator:
+    build: .
+    ports:
+      - "7101:3000"
+    environment:
+      - PORT=7101
+    restart: unless-stopped
+    networks:
+      - barokah-network
+
+networks:
+  barokah-network:
+    name: barokah-network
+    external: true
