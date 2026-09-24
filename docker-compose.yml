@@ -11,4 +11,4 @@ services:
 networks:
   barokah-network:
     name: barokah-network
-    driver: bridge
+    external: true
