@@ -1,13 +1,23 @@
-services:
-  rrdgenerator:
-    image: barokah-rrdgenerator:latest
-    build: .
-    ports:
-      - "7101:3000"
-    restart: unless-stopped
-    networks:
-      - rrdgenerator-network
+# Jalankan: docker compose up -d --build
+#
+# NETWORK: digabung ke "barokah-network" — network ini SUDAH ADA di host (dibuat
+# manual/lewat service barokah lain, bukan oleh compose ini), makanya external:true.
+# Ini supaya reverse proxy (Zoraxy) atau service barokah lain yang jalan di network
+# yang sama bisa menjangkau container ini lewat nama container-nya.
 
 networks:
-  rrdgenerator-network:
-    name: rrdgenerator-network
+  barokah-network:
+    name: barokah-network
+    external: true
+
+services:
+  rrdgenerator:
+    build: .
+    container_name: rrdgenerator
+    environment:
+      TZ: ${TZ:-Asia/Jakarta}
+    ports:
+      - "7101:3000"
+    networks:
+      - barokah-network
+    restart: unless-stopped
