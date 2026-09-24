@@ -1,14 +1,26 @@
+# Jalankan: docker compose up -d --build
+#
+# NETWORK: digabung ke "barokah-network" — network ini SUDAH ADA di host (dibuat
+# manual/lewat service barokah lain, bukan oleh compose ini), makanya external:true.
+# Ini supaya reverse proxy (Zoraxy) atau service barokah lain yang jalan di network
+# yang sama bisa menjangkau container ini lewat nama container-nya.
+
+networks:
+  barokah-network:
+    name: barokah-network
+    external: true
+
 services:
   rrdgenerator:
-    image: node:20-alpine
+    build: .
     container_name: rrdgenerator
-    restart: unless-stopped
-    working_dir: /app
-    volumes:
-      - .:/app
     environment:
+      NODE_ENV: production
       TZ: ${TZ:-Asia/Jakarta}
-      PORT: 3000
     ports:
       - "7101:3000"
-    command: sh -c "apk add --no-cache rrdtool && ([ -d node_modules ] || npm install) && node index.js"
+    networks:
+      - barokah-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
