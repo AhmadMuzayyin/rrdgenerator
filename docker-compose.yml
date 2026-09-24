@@ -1,12 +1,20 @@
+networks:
+  barokah-network:
+    name: barokah-network
+    external: true
+
 services:
   rrdgenerator:
     image: node:20-alpine
+    container_name: rrdgenerator
     restart: unless-stopped
     environment:
       TZ: Asia/Jakarta
       PORT: 3000
     ports:
       - "7101:3000"
+    networks:
+      - barokah-network
     command: >
       sh -c "apk add --no-cache git rrdtool &&
              if [ -d /app/.git ]; then
