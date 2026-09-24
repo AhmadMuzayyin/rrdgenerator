@@ -6,9 +6,8 @@ services:
       - "7101:3000"
     restart: unless-stopped
     networks:
-      - barokah-network
+      - rrdgenerator-network
 
 networks:
-  barokah-network:
-    name: barokah-network
-    external: true
+  rrdgenerator-network:
+    name: rrdgenerator-network
